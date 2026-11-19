@@ -1,0 +1,19 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+# Raw public EEG datasets (downloaded separately)
+data/
+
+# Scratch / test figure regeneration outputs
+figures_reproduced/
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
