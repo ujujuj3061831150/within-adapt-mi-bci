@@ -31,7 +31,7 @@ within-adapt-mi-bci/
 ├── LICENSE
 ├── .gitignore
 ├── requirements.txt
-├── verify_tables.py            # Prints Tables 2--4 & statistical tests from results/*.npz
+├── verify_tables.py            # Prints primary benchmark tables & statistical tests from results/*.npz
 ├── generate_figures.py         # Reproduces manuscript Figs. 2--6 from results/*.npz
 ├── figures/                    # Final vector PDF and 600-DPI PNG manuscript figures (Figs. 1--6)
 ├── results/                    # Precomputed per-subject/fold .npz & CSSP check JSON archives
@@ -66,7 +66,7 @@ All per-subject and per-fold outputs reported in the manuscript are bundled in `
 pip install -r requirements.txt
 ```
 
-1. **Verify Tables 2--4 and primary statistical tests**:
+1. **Verify primary benchmark tables and statistical tests**:
    ```bash
    python verify_tables.py
    ```
@@ -96,13 +96,13 @@ Place the four public cohorts under `./data/` (or set `WITHIN_ADAPT_DATA_ROOT` /
 ```bash
 export WITHIN_ADAPT_DATA_ROOT=/path/to/bci_data   # optional if placed in ./data
 
-python src/run_step2_riemannian_master.py        # Table 3, EEGBCI regimes, cold start, W-sweep, latency
+python src/run_step2_riemannian_master.py        # Main benchmark tables, EEGBCI regimes, cold start, W-sweep, latency
 python src/run_step2_dl_fair_and_latency.py      # 3-seed causal EEGNet / EA+EEGNet & latency (GPU recommended)
 python src/compute_step2_extras.py               # EEGBCI burst-6, Chang random shuffle, Haufe matrices
 python src/probe_step1_audit_and_causal.py       # Auxiliary causal baseline comparisons
-python src/run_step4_fixes.py                    # Clean Wilcoxon stats, N=106 control, eigenspace, Haufe, refits
+python src/run_step4_fixes.py                    # Clean Wilcoxon stats, n=106 control, eigenspace, Haufe, refits
 python src/run_p1_audit_updates.py               # Zero-excluded Holm/DL stats, Uncal CPU runtime, 2a burst-6
-python src/run_gamma_ablation.py                 # Fixed-gamma Within-CORAL sweep (Fig. 5b)
+python src/run_gamma_ablation.py                 # Fixed-gamma Within-CORAL sweep (Fig. 4b in manuscript)
 python src/run_dispersion_drift_stress.py        # 3x/0.25x dispersion & 3-channel contact-gain jitter tests (Fig. 6a)
 python src/run_reviewer_revision_ablations.py    # 12-ch CAR, Eq. (5) re-projection, cold-start sensitivity (Fig. 6b,c)
 python src/run_final_audit_checks.py             # TOST equivalence, z-Adapt ablation, Causal Recentered MDM
