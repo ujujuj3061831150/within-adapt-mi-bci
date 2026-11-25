@@ -411,9 +411,9 @@ def build_fig3(m, s4, pvals) -> None:
     ax_txt.text(0.04, -0.95, "Mean Δ [95% CI] (pp)", fontweight="bold", fontsize=7.6)
 
     sig_styles = {
-        "holm": (COL["wa"], "s", COL["wa"], "Holm P < 0.05"),
-        "raw": (COL["g1"], "D", "white", "Raw P < 0.05 only"),
-        "ns": ("#666666", "o", "white", "n.s. (P ≥ 0.05)"),
+        "holm": (COL["wa"], "s", COL["wa"], "Holm $p$ < 0.05"),
+        "raw": (COL["g1"], "D", "white", "Raw $p$ < 0.05 only"),
+        "ns": ("#666666", "o", "white", "n.s. ($p$ ≥ 0.05)"),
     }
     for y, (disp, key, n, ncls) in zip(rows, PROTOCOLS):
         split = "CS" if "cs" in key else "LOSO"
@@ -703,10 +703,10 @@ def build_fig6(m, s4, dds, rra) -> None:
     stress_specs = [
         ("2a_4cls__disp_3x", "IV-2a 4-cls\n3× disp. (n=9)"),
         ("2a_4cls__disp_0.25x", "IV-2a 4-cls\n0.25× disp. (n=9)"),
-        ("2a_4cls__aniso_ch_drift", "IV-2a 4-cls\nCh. drift (n=9)"),
+        ("2a_4cls__aniso_ch_drift", "IV-2a 4-cls\nCh. jitter (n=9)"),
         ("chang_3cls__disp_3x", "Chang 3-cls\n3× disp. (n=28)"),
         ("chang_3cls__disp_0.25x", "Chang 3-cls\n0.25× disp. (n=28)"),
-        ("chang_3cls__aniso_ch_drift", "Chang 3-cls\nCh. drift (n=28)"),
+        ("chang_3cls__aniso_ch_drift", "Chang 3-cls\nCh. jitter (n=28)"),
     ]
     stress_methods = [
         ("zCORAL", "z-CORAL (OAS-Src)", COL["zcoral"], "v", -0.22),
@@ -739,7 +739,7 @@ def build_fig6(m, s4, dds, rra) -> None:
         xlim=(-0.52, 5.52), ylim=(-11.5, 22.8), yticks=[-10, -5, 0, 5, 10, 15, 20],
         xticks=range(6), xticklabels=[s[1] for s in stress_specs],
         ylabel="Gain over G1 (pp; ± SEM)",
-        title="Controlled covariance & channel-drift stress tests (vs. G1 = 0 pp)",
+        title="Controlled covariance & channel-jitter stress tests (vs. G1 = 0 pp)",
     )
     ax_a.tick_params(axis="x", length=0, labelsize=7.1, pad=3)
     ax_a.legend(loc="upper center", bbox_to_anchor=(0.50, 1.27), ncol=3,

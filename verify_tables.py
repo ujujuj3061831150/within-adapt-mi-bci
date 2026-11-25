@@ -6,6 +6,7 @@ Usage:
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -118,6 +119,25 @@ def main() -> None:
     print(f"  2a 4-cls EA+EEGNet LOSO    : WA={m['2a_4cls_loso__Within-Adapt'].mean()*100:.2f}% vs EA+EEGNet={dl['2a_4cls_loso__Online_EA_EEGNet__acc15'].mean()*100:.2f}% (p={exact_wilcoxon(m['2a_4cls_loso__Within-Adapt'], dl['2a_4cls_loso__Online_EA_EEGNet__acc15'])[0]:.4f})")
     print(f"  EEGBCI Haufe focal ratios  : Full={s4['focal_ratio_full'][0]:.2f}x, HB={s4['focal_ratio_hb'][0]:.2f}x")
     print(f"  EEGBCI burst-6             : WA={ex['eeg_burst6__Within-Adapt'].mean()*100:.2f}% vs G1={ex['eeg_burst6__G1'].mean()*100:.2f}%")
+
+    cssp_json = RESULTS_DIR / "cssp_revision_checks.json"
+    if cssp_json.exists():
+        cj = json.loads(cssp_json.read_text(encoding="utf-8"))
+        print("\n=== CSSP SUPPLEMENTARY CHECKS (Table 4 controls, PCA D-sweep, real latency) ===")
+        for tag in ("2a_4cls_cs", "2a_4cls_loso"):
+            m2t = cj["m2"][tag]
+            zc = cj["z_coral_ss_2a4"][tag]
+            print(f"  Confounders {tag:12s}: WA={m2t['WA']['mean']:.2f}% | zAd+SS={m2t['zAdapt_SS']['mean']:.2f}%(p={m2t['zAdapt_SS']['p_vs_WA']:.4f}) | gamma=1:{m2t['WA_gamma1']['mean']:.2f}% | zCORAL+SS={zc['zCORAL_SS']:.2f}%(p={zc['p_SS_vs_WA']:.4f})")
+        for tag in ("2a_4cls__disp_3x", "2a_4cls__disp_0.25x", "2a_4cls__aniso_ch_drift", "chang_3cls__disp_3x", "chang_3cls__disp_0.25x", "chang_3cls__aniso_ch_drift"):
+            r = cj["m2"][tag]
+            print(f"  Stress {tag:26s}: Uncal={r['Uncal']['mean']:.2f}% | gamma=1:{r['WA_gamma1']['mean']:.2f}% | zAd+SS={r['zAdapt_SS']['mean']:.2f}%(p={r['zAdapt_SS']['p_vs_WA']:.4f}) | WA={r['WA']['mean']:.2f}%")
+        c12 = cj["chang3_car12"]
+        print(f"  Stress chang3_car12              : gamma=1:{c12['WA_gamma1']['mean']:.2f}%(p={c12['WA_gamma1']['p_vs_WA']:.4f}) | zAd+SS={c12['zAdapt_SS']['mean']:.2f}%(p={c12['zAdapt_SS']['p_vs_WA']:.4f}) | WA={c12['Within-Adapt']['mean']:.2f}%")
+        for tag in ("2a_4cls_cs", "2a_4cls_loso"):
+            pd = cj["m5_pca"][tag]
+            print(f"  PCA D-sweep {tag:12s}: " + " | ".join(f"D{d}:WA={pd[f'D{d}']['WA']:.2f}%/zC={pd[f'D{d}']['zCORAL']:.2f}%" for d in (15, 30, 60, 120)))
+        rl = cj["m6_real_latency"]
+        print(f"  Real CPU latency                 : 13ch={rl['EEGBCI_13ch_real']['mean']:.2f}+-{rl['EEGBCI_13ch_real']['std']:.2f} ms (P95={rl['EEGBCI_13ch_real']['p95']:.2f}) | 22ch={rl['BCIC2a_22ch_real']['mean']:.2f}+-{rl['BCIC2a_22ch_real']['std']:.2f} ms (P95={rl['BCIC2a_22ch_real']['p95']:.2f})")
 
 
 if __name__ == "__main__":
